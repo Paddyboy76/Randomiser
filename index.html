@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Oil's Random Name Picker</title>
+    <title>Random Name Picker</title>
     <meta charset="UTF-8">
     <style>
         body {
@@ -24,6 +24,7 @@
             transform: translate(-50%, -50%);
             top: 50%;
             left: 50%;
+            transition: opacity 0.5s ease-in-out;
         }
         #pickButton {
             padding: 10px 20px;
@@ -33,7 +34,7 @@
     </style>
 </head>
 <body>
-    <h1>Random Name Picker</h1>
+    <h1>Oil's Random Name Picker</h1>
     <div id="clockContainer">
         <!-- Names will be dynamically populated here -->
     </div>
@@ -66,7 +67,7 @@
                 const nameElement = document.createElement('div');
                 nameElement.className = 'name';
                 nameElement.innerText = name;
-                nameElement.style.transform = `rotate(${currentAngle}deg) translate(150px) rotate(${-currentAngle}deg)`;
+                nameElement.style.transform = `rotate(${currentAngle}deg) translate(75px) rotate(${-currentAngle}deg)`;
                 nameElements.push(nameElement);
                 clockContainer.appendChild(nameElement);
                 currentAngle += angleIncrement;
@@ -82,7 +83,7 @@
                 nameElements.forEach(nameElement => {
                     const randomRotation = Math.random() * 720 - 360;
                     nameElement.style.transition = 'transform 3s ease-in-out';
-                    nameElement.style.transform = `rotate(${randomRotation}deg) translate(150px) rotate(${-randomRotation}deg)`;
+                    nameElement.style.transform = `rotate(${randomRotation}deg) translate(75px) rotate(${-randomRotation}deg)`;
                 });
 
                 setTimeout(() => {
@@ -114,4 +115,3 @@
     </script>
 </body>
 </html>
-
