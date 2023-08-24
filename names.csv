@@ -1,4 +1,4 @@
-suptar,id,first,last,dept1,dept2
-SUPTAR50,567715,BUDSABA,GOYRAM,IPUsMedicine2CCD,IntensiveCareUnit3
-SUPTAR52,556839,KHANITTHA,CHAMRAS,CoENeuroCCD,OperatingRoomBIH
-SUPTAR30,579774,JUNGKANIPA,SIRIDON,IPUsMedicine2OPD,BKKMentalHealthRehabBMRC
+suptar  id  first   last    dept1   dept2
+John    1   John    Doe     DeptA   DeptB
+Alice   2   Alice   Smith   DeptC   DeptD
+Bob     3   Bob     Johnson DeptE   DeptF
