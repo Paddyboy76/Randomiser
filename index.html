@@ -1,74 +1,117 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Random Name Picker</title>
+    <title>Oil's Random Name Picker</title>
     <meta charset="UTF-8">
     <style>
-        /* Your styles here */
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        #clockContainer {
+            width: 300px;
+            height: 500px;
+            margin: 30px auto;
+            border: 2px solid #333;
+            overflow: hidden;
+            position: relative;
+        }
+        .name {
+            position: absolute;
+            font-size: 14px;
+            white-space: nowrap;
+            opacity: 0;
+            transform: translate(-50%, -50%);
+            top: 50%;
+            left: 50%;
+        }
+        #pickButton {
+            padding: 10px 20px;
+            font-size: 18px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
     <h1>Random Name Picker</h1>
-    <div id="wheelContainer">
-        <div id="wheel"></div>
+    <div id="clockContainer">
+        <!-- Names will be dynamically populated here -->
     </div>
     <button id="pickButton">Pick a Random Name</button>
 
     <script>
-        const wheel = document.getElementById('wheel');
+        const clockContainer = document.getElementById('clockContainer');
         const pickButton = document.getElementById('pickButton');
 
         let names = [];
+        const nameElements = [];
 
         async function loadNamesFromCSV() {
             try {
                 const response = await fetch('names.csv');
                 const csvData = await response.text();
                 names = csvData.split('\n').map(name => name.trim()).filter(name => name !== '');
-                populateWheel();
+                populateClock();
             } catch (error) {
                 console.error('Error loading names:', error);
             }
         }
 
-        function populateWheel() {
-            wheel.innerHTML = names.map(name => `<div class="name">${name}</div>`).join('');
+        function populateClock() {
+            clockContainer.innerHTML = '';
+            const angleIncrement = 360 / names.length;
+            let currentAngle = -90;
+
+            names.forEach((name, index) => {
+                const nameElement = document.createElement('div');
+                nameElement.className = 'name';
+                nameElement.innerText = name;
+                nameElement.style.transform = `rotate(${currentAngle}deg) translate(150px) rotate(${-currentAngle}deg)`;
+                nameElements.push(nameElement);
+                clockContainer.appendChild(nameElement);
+                currentAngle += angleIncrement;
+            });
         }
 
         let spinning = false;
 
-        function spinWheel() {
+        function tumbleNames() {
             if (!spinning && names.length > 0) {
                 spinning = true;
 
-                const randomDegree = Math.random() * 360 + 720; // Spin between 2 to 3 full rotations
-                const randomNameIndex = Math.floor(Math.random() * names.length);
-
-                const selectedName = names[randomNameIndex];
-                const offset = 90 - randomNameIndex * (360 / names.length);
-
-                wheel.style.transform = `rotate(${offset}deg)`;
-                const nameElements = document.querySelectorAll('.name');
-                nameElements.forEach((element, index) => {
-                    if (index !== randomNameIndex) {
-                        element.style.opacity = 0;
-                    }
+                nameElements.forEach(nameElement => {
+                    const randomRotation = Math.random() * 720 - 360;
+                    nameElement.style.transition = 'transform 3s ease-in-out';
+                    nameElement.style.transform = `rotate(${randomRotation}deg) translate(150px) rotate(${-randomRotation}deg)`;
                 });
 
                 setTimeout(() => {
-                    wheel.style.transition = 'transform 5s cubic-bezier(0.25, 1, 0.25, 1)';
-                    wheel.style.transform = `rotate(${randomDegree}deg)`;
-                }, 10);
+                    nameElements.forEach(nameElement => {
+                        nameElement.style.transition = 'none';
+                        nameElement.style.opacity = 0;
+                    });
+                }, 3000);
 
                 setTimeout(() => {
-                    nameElements[randomNameIndex].style.opacity = 1;
+                    const randomIndex = Math.floor(Math.random() * names.length);
+                    const selectedName = names[randomIndex];
+                    nameElements[randomIndex].style.opacity = 1;
                     spinning = false;
-                }, 5100); // Wait for 5 seconds before displaying the result
+                    setTimeout(() => {
+                        nameElements[randomIndex].style.opacity = 0;
+                        setTimeout(() => {
+                            nameElements[randomIndex].style.opacity = 1;
+                            nameElements[randomIndex].style.transition = 'opacity 0.5s ease-in-out';
+                            nameElements[randomIndex].innerText = 'Congratulations!\n' + selectedName;
+                        }, 500);
+                    }, 2000);
+                }, 3000);
             }
         }
 
-        pickButton.addEventListener('click', spinWheel);
+        pickButton.addEventListener('click', tumbleNames);
         loadNamesFromCSV();
     </script>
 </body>
 </html>
+
