@@ -59,7 +59,7 @@
     </style>
 </head>
 <body>
-    <h1>Random Name Picker V2.41</h1>
+    <h1>Random Name Picker</h1>
     <button id="pickButton">Pick a Random Name</button>
     <div id="pickerContainer">
         <!-- Names will be dynamically populated here -->
@@ -103,6 +103,13 @@
                 const nameInfoElement = document.createElement('div');
                 nameInfoElement.className = 'name-info';
                 nameInfoElement.style.opacity = 0;
+                nameInfoElement.innerHTML = `
+                    <p>${person.first} ${person.last}</p>
+                    <p>ID: ${person.id}</p>
+                    <p>Dept1: ${person.dept1}</p>
+                    <p>Dept2: ${person.dept2}</p>
+                    <p>Suptar: ${person.suptar}</p>
+                `;
                 pickerContainer.appendChild(nameInfoElement);
                 nameElements.push(nameInfoElement);
             });
@@ -129,17 +136,9 @@
                     const randomIndex = Math.floor(Math.random() * namesData.length);
                     const selectedPerson = namesData[randomIndex];
 
-                    nameElements[randomIndex].innerHTML = `
-                        <p>${selectedPerson.first} ${selectedPerson.last}</p>
-                        <p>ID: ${selectedPerson.id}</p>
-                        <p>Dept1: ${selectedPerson.dept1}</p>
-                        <p>Dept2: ${selectedPerson.dept2}</p>
-                        <p>Suptar: ${selectedPerson.suptar}</p>
-                    `;
+                    nameElements[randomIndex].style.opacity = 1;
 
                     setTimeout(() => {
-                        nameElements[randomIndex].style.opacity = 1;
-                        nameElements[randomIndex].style.transition = 'opacity 0.5s ease-in-out';
                         picking = false;
                         pickButton.disabled = false;
                     }, 1500);
