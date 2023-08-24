@@ -21,9 +21,9 @@
             position: relative;
             background-color: rgba(255, 255, 255, 0.9);
         }
-        .name {
+        .name-info {
             position: absolute;
-            font-size: 24px;
+            font-size: 16px;
             white-space: nowrap;
             opacity: 0;
             transform: translate(-50%, -50%);
@@ -72,14 +72,23 @@
         const spinner = document.querySelector('.spinner');
         const flashingText = document.querySelector('.flashing-text');
 
-        let names = [];
+        let namesData = [];
         const nameElements = [];
 
         async function loadNamesFromCSV() {
             try {
                 const response = await fetch('names.csv');
                 const csvData = await response.text();
-                names = csvData.split('\n').map(name => name.trim()).filter(name => name !== '');
+                const lines = csvData.split('\n');
+                const headers = lines[0].split(',');
+                namesData = lines.slice(1).map(line => {
+                    const values = line.split(',');
+                    const person = {};
+                    headers.forEach((header, index) => {
+                        person[header] = values[index];
+                    });
+                    return person;
+                });
                 populateNames();
             } catch (error) {
                 console.error('Error loading names:', error);
@@ -89,19 +98,26 @@
         function populateNames() {
             pickerContainer.innerHTML = '';
 
-            names.forEach(name => {
-                const nameElement = document.createElement('div');
-                nameElement.className = 'name';
-                nameElement.innerText = name;
-                nameElements.push(nameElement);
-                pickerContainer.appendChild(nameElement);
+            namesData.forEach(person => {
+                const nameInfoElement = document.createElement('div');
+                nameInfoElement.className = 'name-info';
+                nameInfoElement.innerHTML = `
+                    <p>${person.first} ${person.last}</p>
+                    <p>ID: ${person.id}</p>
+                    <p>Dept1: ${person.dept1}</p>
+                    <p>Dept2: ${person.dept2}</p>
+                    <p>Suptar: ${person.suptar}</p>
+                `;
+                nameInfoElement.style.opacity = 0;
+                pickerContainer.appendChild(nameInfoElement);
+                nameElements.push(nameInfoElement);
             });
         }
 
         let picking = false;
 
         function pickRandomName() {
-            if (!picking && names.length > 0) {
+            if (!picking && namesData.length > 0) {
                 picking = true;
 
                 spinner.style.display = 'inline';
@@ -116,13 +132,12 @@
                         nameElement.style.opacity = 0;
                     });
 
-                    const randomIndex = Math.floor(Math.random() * names.length);
-                    const selectedName = names[randomIndex];
+                    const randomIndex = Math.floor(Math.random() * namesData.length);
+                    const selectedPerson = namesData[randomIndex];
 
                     setTimeout(() => {
                         nameElements[randomIndex].style.opacity = 1;
                         nameElements[randomIndex].style.transition = 'opacity 0.5s ease-in-out';
-                        nameElements[randomIndex].innerText = 'Congratulations!\n' + selectedName;
                         picking = false;
                         pickButton.disabled = false;
                     }, 1500);
