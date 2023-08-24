@@ -16,9 +16,9 @@
             overflow: hidden;
             position: relative;
         }
-        .dice {
+        .name {
             position: absolute;
-            font-size: 14px;
+            font-size: 24px;
             white-space: nowrap;
             opacity: 0;
             transform: translate(-50%, -50%);
@@ -34,7 +34,7 @@
     </style>
 </head>
 <body>
-    <h1>Random Name Picker</h1>
+    <h1>V1.45</h1>
     <div id="diceContainer">
         <!-- Names will be dynamically populated here -->
     </div>
@@ -45,61 +45,54 @@
         const pickButton = document.getElementById('pickButton');
 
         let names = [];
-        const diceElements = [];
+        const nameElements = [];
 
         async function loadNamesFromCSV() {
             try {
                 const response = await fetch('names.csv');
                 const csvData = await response.text();
                 names = csvData.split('\n').map(name => name.trim()).filter(name => name !== '');
-                populateDice();
+                populateNames();
             } catch (error) {
                 console.error('Error loading names:', error);
             }
         }
 
-        function populateDice() {
+        function populateNames() {
             diceContainer.innerHTML = '';
 
             names.forEach(name => {
-                const diceElement = document.createElement('div');
-                diceElement.className = 'dice';
-                diceElement.innerText = name;
-                diceElements.push(diceElement);
-                diceContainer.appendChild(diceElement);
+                const nameElement = document.createElement('div');
+                nameElement.className = 'name';
+                nameElement.innerText = name;
+                nameElements.push(nameElement);
+                diceContainer.appendChild(nameElement);
             });
         }
 
-        let rolling = false;
+        let picking = false;
 
-        function rollDice() {
-            if (!rolling && names.length > 0) {
-                rolling = true;
+        function pickRandomName() {
+            if (!picking && names.length > 0) {
+                picking = true;
 
-                diceElements.forEach(diceElement => {
-                    const randomRotation = Math.random() * 1080 - 540; // Rotate between -540 to 540 degrees
-                    diceElement.style.transition = 'transform 3s ease-in-out';
-                    diceElement.style.transform = `rotate(${randomRotation}deg)`;
+                nameElements.forEach(nameElement => {
+                    nameElement.style.opacity = 0;
                 });
 
+                const randomIndex = Math.floor(Math.random() * names.length);
+                const selectedName = names[randomIndex];
+
                 setTimeout(() => {
-                    const randomIndex = Math.floor(Math.random() * names.length);
-                    const selectedName = names[randomIndex];
-                    diceElements[randomIndex].style.opacity = 1;
-                    rolling = false;
-                    setTimeout(() => {
-                        diceElements[randomIndex].style.opacity = 0;
-                        setTimeout(() => {
-                            diceElements[randomIndex].style.opacity = 1;
-                            diceElements[randomIndex].style.transition = 'opacity 0.5s ease-in-out';
-                            diceElements[randomIndex].innerText = 'Congratulations!\n' + selectedName;
-                        }, 500);
-                    }, 2000);
-                }, 3000);
+                    nameElements[randomIndex].style.opacity = 1;
+                    nameElements[randomIndex].style.transition = 'opacity 0.5s ease-in-out';
+                    nameElements[randomIndex].innerText = 'Congratulations!\n' + selectedName;
+                    picking = false;
+                }, 1500);
             }
         }
 
-        pickButton.addEventListener('click', rollDice);
+        pickButton.addEventListener('click', pickRandomName);
         loadNamesFromCSV();
     </script>
 </body>
