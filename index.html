@@ -30,6 +30,7 @@
             top: 50%;
             left: 50%;
             transition: opacity 0.5s ease-in-out;
+            text-align: center;
         }
         .spinner {
             display: none;
@@ -80,9 +81,9 @@
                 const response = await fetch('names.csv');
                 const csvData = await response.text();
                 const lines = csvData.split('\n');
-                const headers = lines[0].split(',');
+                const headers = lines[0].split('\t');
                 namesData = lines.slice(1).map(line => {
-                    const values = line.split(',');
+                    const values = line.split('\t');
                     const person = {};
                     headers.forEach((header, index) => {
                         person[header] = values[index];
