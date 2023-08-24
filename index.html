@@ -8,7 +8,7 @@
             font-family: Arial, sans-serif;
             text-align: center;
         }
-        #diceContainer {
+        #pickerContainer {
             width: 300px;
             height: 500px;
             margin: 30px auto;
@@ -26,6 +26,21 @@
             left: 50%;
             transition: opacity 0.5s ease-in-out;
         }
+        .spinner {
+            display: none;
+        }
+        .flashing-text {
+            animation: flash 0.5s infinite alternate;
+            display: none;
+        }
+        @keyframes flash {
+            from {
+                opacity: 1;
+            }
+            to {
+                opacity: 0;
+            }
+        }
         #pickButton {
             padding: 10px 20px;
             font-size: 18px;
@@ -34,15 +49,19 @@
     </style>
 </head>
 <body>
-    <h1>V1.45</h1>
-    <div id="diceContainer">
+    <h1>V1.50</h1>
+    <div id="pickerContainer">
         <!-- Names will be dynamically populated here -->
     </div>
+    <div class="spinner">🌀</div>
+    <p class="flashing-text">Picking random name...</p>
     <button id="pickButton">Pick a Random Name</button>
 
     <script>
-        const diceContainer = document.getElementById('diceContainer');
+        const pickerContainer = document.getElementById('pickerContainer');
         const pickButton = document.getElementById('pickButton');
+        const spinner = document.querySelector('.spinner');
+        const flashingText = document.querySelector('.flashing-text');
 
         let names = [];
         const nameElements = [];
@@ -59,14 +78,14 @@
         }
 
         function populateNames() {
-            diceContainer.innerHTML = '';
+            pickerContainer.innerHTML = '';
 
             names.forEach(name => {
                 const nameElement = document.createElement('div');
                 nameElement.className = 'name';
                 nameElement.innerText = name;
                 nameElements.push(nameElement);
-                diceContainer.appendChild(nameElement);
+                pickerContainer.appendChild(nameElement);
             });
         }
 
@@ -76,18 +95,28 @@
             if (!picking && names.length > 0) {
                 picking = true;
 
-                nameElements.forEach(nameElement => {
-                    nameElement.style.opacity = 0;
-                });
-
-                const randomIndex = Math.floor(Math.random() * names.length);
-                const selectedName = names[randomIndex];
+                spinner.style.display = 'inline';
+                flashingText.style.display = 'block';
+                pickButton.disabled = true;
 
                 setTimeout(() => {
-                    nameElements[randomIndex].style.opacity = 1;
-                    nameElements[randomIndex].style.transition = 'opacity 0.5s ease-in-out';
-                    nameElements[randomIndex].innerText = 'Congratulations!\n' + selectedName;
-                    picking = false;
+                    spinner.style.display = 'none';
+                    flashingText.style.display = 'none';
+
+                    nameElements.forEach(nameElement => {
+                        nameElement.style.opacity = 0;
+                    });
+
+                    const randomIndex = Math.floor(Math.random() * names.length);
+                    const selectedName = names[randomIndex];
+
+                    setTimeout(() => {
+                        nameElements[randomIndex].style.opacity = 1;
+                        nameElements[randomIndex].style.transition = 'opacity 0.5s ease-in-out';
+                        nameElements[randomIndex].innerText = 'Congratulations!\n' + selectedName;
+                        picking = false;
+                        pickButton.disabled = false;
+                    }, 1500);
                 }, 1500);
             }
         }
