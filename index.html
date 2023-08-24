@@ -32,12 +32,7 @@
             transition: opacity 0.5s ease-in-out;
         }
         .spinner {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
             display: none;
-            animation: spin 2s linear infinite;
         }
         .flashing-text {
             position: absolute;
@@ -46,10 +41,6 @@
             transform: translateX(-50%);
             display: none;
             animation: flash 0.5s infinite alternate;
-        }
-        @keyframes spin {
-            0% { transform: translate(-50%, -50%) rotate(0deg); }
-            100% { transform: translate(-50%, -50%) rotate(360deg); }
         }
         @keyframes flash {
             from {
@@ -67,13 +58,13 @@
     </style>
 </head>
 <body>
-    <h1>V2.00</h1>
+    <h1>Random Name Picker</h1>
+    <button id="pickButton">Pick a Random Name</button>
     <div id="pickerContainer">
         <!-- Names will be dynamically populated here -->
-        <div class="spinner">🌀</div>
-        <p class="flashing-text">Picking random name...</p>
     </div>
-    <button id="pickButton">Pick a Random Name</button>
+    <div class="spinner">🌀</div>
+    <p class="flashing-text">Picking random name...</p>
 
     <script>
         const pickerContainer = document.getElementById('pickerContainer');
@@ -96,7 +87,6 @@
         }
 
         function populateNames() {
-            nameElements.length = 0; // Clear the array
             pickerContainer.innerHTML = '';
 
             names.forEach(name => {
@@ -114,7 +104,7 @@
             if (!picking && names.length > 0) {
                 picking = true;
 
-                spinner.style.display = 'block';
+                spinner.style.display = 'inline';
                 flashingText.style.display = 'block';
                 pickButton.disabled = true;
 
