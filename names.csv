@@ -1,4 +1,4 @@
-suptar  id  first   last    dept1   dept2
-John    1   John    Doe     DeptA   DeptB
-Alice   2   Alice   Smith   DeptC   DeptD
-Bob     3   Bob     Johnson DeptE   DeptF
+suptar,id,first,last,dept1,dept2
+John,1,John,Doe,DeptA,DeptB
+Alice,2,Alice,Smith,DeptC,DeptD
+Bob,3,Bob,Johnson,DeptE,DeptF
