@@ -34,7 +34,7 @@
     </style>
 </head>
 <body>
-    <h1>Oil's Random Name Picker</h1>
+    <h1>Random Name Picker 1:27</h1>
     <div id="clockContainer">
         <!-- Names will be dynamically populated here -->
     </div>
@@ -80,33 +80,33 @@
             if (!spinning && names.length > 0) {
                 spinning = true;
 
-                nameElements.forEach(nameElement => {
-                    const randomRotation = Math.random() * 720 - 360;
-                    nameElement.style.transition = 'transform 3s ease-in-out';
-                    nameElement.style.transform = `rotate(${randomRotation}deg) translate(75px) rotate(${-randomRotation}deg)`;
-                });
+                const angleIncrement = 10; // Adjust the angle increment for smoother animation
+                const maxRotation = 360 * 2 + Math.floor(Math.random() * 180); // Spin between 2 to 3 full rotations
+                let currentRotation = 0;
 
-                setTimeout(() => {
+                const tumbleInterval = setInterval(() => {
                     nameElements.forEach(nameElement => {
-                        nameElement.style.transition = 'none';
-                        nameElement.style.opacity = 0;
+                        const rotate = currentRotation + nameElements.indexOf(nameElement) * angleIncrement;
+                        const translateX = 75 * Math.cos((rotate - 90) * (Math.PI / 180));
+                        const translateY = 75 * Math.sin((rotate - 90) * (Math.PI / 180));
+                        nameElement.style.transform = `translate(${translateX}px, ${translateY}px)`;
                     });
-                }, 3000);
 
-                setTimeout(() => {
-                    const randomIndex = Math.floor(Math.random() * names.length);
-                    const selectedName = names[randomIndex];
-                    nameElements[randomIndex].style.opacity = 1;
-                    spinning = false;
-                    setTimeout(() => {
-                        nameElements[randomIndex].style.opacity = 0;
+                    currentRotation += angleIncrement;
+
+                    if (currentRotation >= maxRotation) {
+                        clearInterval(tumbleInterval);
+
+                        const randomIndex = Math.floor(Math.random() * names.length);
+                        const selectedName = names[randomIndex];
+                        nameElements[randomIndex].style.opacity = 1;
+
                         setTimeout(() => {
-                            nameElements[randomIndex].style.opacity = 1;
                             nameElements[randomIndex].style.transition = 'opacity 0.5s ease-in-out';
                             nameElements[randomIndex].innerText = 'Congratulations!\n' + selectedName;
                         }, 500);
-                    }, 2000);
-                }, 3000);
+                    }
+                }, 50); // Adjust the interval for animation speed
             }
         }
 
