@@ -4,10 +4,11 @@
     <title>Random Name Picker</title>
     <meta charset="UTF-8">
     <style>
+        /* Your CSS styles here */
         body {
             font-family: Arial, sans-serif;
             text-align: center;
-            background-image: url('background.jpg');
+            background-image: url('background.png');
             background-repeat: no-repeat;
             background-size: cover;
             background-position: center center;
@@ -59,7 +60,7 @@
     </style>
 </head>
 <body>
-    <h1>Random Name Picker 3.28</h1>
+    <h1>Random Name Picker</h1>
     <button id="pickButton">Pick a Random Name</button>
     <div id="pickerContainer">
         <!-- Names will be dynamically populated here -->
@@ -105,8 +106,9 @@
                 nameInfoElement.style.opacity = 0;
                 nameInfoElement.innerHTML = `
                     <p>${person.first} ${person.last}</p>
-                    <p>Staff ID: ${person.id}</p>
-                    <p>Department: ${person.dept1}</p>
+                    <p>ID: ${person.id}</p>
+                    <p>Dept1: ${person.dept1}</p>
+                    <p>Dept2: ${person.dept2}</p>
                     <p>Suptar: ${person.suptar}</p>
                 `;
                 pickerContainer.appendChild(nameInfoElement);
@@ -149,3 +151,4 @@
     </script>
 </body>
 </html>
+
