@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Random</title>
+    <title>Random Name Picker</title>
     <meta charset="UTF-8">
     <style>
         body {
             font-family: Arial, sans-serif;
             text-align: center;
         }
-        #clockContainer {
+        #diceContainer {
             width: 300px;
             height: 500px;
             margin: 30px auto;
@@ -16,7 +16,7 @@
             overflow: hidden;
             position: relative;
         }
-        .name {
+        .dice {
             position: absolute;
             font-size: 14px;
             white-space: nowrap;
@@ -34,83 +34,72 @@
     </style>
 </head>
 <body>
-    <h1>Random Name Picker 1:27</h1>
-    <div id="clockContainer">
+    <h1>Random Name Picker</h1>
+    <div id="diceContainer">
         <!-- Names will be dynamically populated here -->
     </div>
     <button id="pickButton">Pick a Random Name</button>
 
     <script>
-        const clockContainer = document.getElementById('clockContainer');
+        const diceContainer = document.getElementById('diceContainer');
         const pickButton = document.getElementById('pickButton');
 
         let names = [];
-        const nameElements = [];
+        const diceElements = [];
 
         async function loadNamesFromCSV() {
             try {
                 const response = await fetch('names.csv');
                 const csvData = await response.text();
                 names = csvData.split('\n').map(name => name.trim()).filter(name => name !== '');
-                populateClock();
+                populateDice();
             } catch (error) {
                 console.error('Error loading names:', error);
             }
         }
 
-        function populateClock() {
-            clockContainer.innerHTML = '';
-            const angleIncrement = 360 / names.length;
-            let currentAngle = -90;
+        function populateDice() {
+            diceContainer.innerHTML = '';
 
-            names.forEach((name, index) => {
-                const nameElement = document.createElement('div');
-                nameElement.className = 'name';
-                nameElement.innerText = name;
-                nameElement.style.transform = `rotate(${currentAngle}deg) translate(75px) rotate(${-currentAngle}deg)`;
-                nameElements.push(nameElement);
-                clockContainer.appendChild(nameElement);
-                currentAngle += angleIncrement;
+            names.forEach(name => {
+                const diceElement = document.createElement('div');
+                diceElement.className = 'dice';
+                diceElement.innerText = name;
+                diceElements.push(diceElement);
+                diceContainer.appendChild(diceElement);
             });
         }
 
-        let spinning = false;
+        let rolling = false;
 
-        function tumbleNames() {
-            if (!spinning && names.length > 0) {
-                spinning = true;
+        function rollDice() {
+            if (!rolling && names.length > 0) {
+                rolling = true;
 
-                const angleIncrement = 10; // Adjust the angle increment for smoother animation
-                const maxRotation = 360 * 2 + Math.floor(Math.random() * 180); // Spin between 2 to 3 full rotations
-                let currentRotation = 0;
+                diceElements.forEach(diceElement => {
+                    const randomRotation = Math.random() * 1080 - 540; // Rotate between -540 to 540 degrees
+                    diceElement.style.transition = 'transform 3s ease-in-out';
+                    diceElement.style.transform = `rotate(${randomRotation}deg)`;
+                });
 
-                const tumbleInterval = setInterval(() => {
-                    nameElements.forEach(nameElement => {
-                        const rotate = currentRotation + nameElements.indexOf(nameElement) * angleIncrement;
-                        const translateX = 75 * Math.cos((rotate - 90) * (Math.PI / 180));
-                        const translateY = 75 * Math.sin((rotate - 90) * (Math.PI / 180));
-                        nameElement.style.transform = `translate(${translateX}px, ${translateY}px)`;
-                    });
-
-                    currentRotation += angleIncrement;
-
-                    if (currentRotation >= maxRotation) {
-                        clearInterval(tumbleInterval);
-
-                        const randomIndex = Math.floor(Math.random() * names.length);
-                        const selectedName = names[randomIndex];
-                        nameElements[randomIndex].style.opacity = 1;
-
+                setTimeout(() => {
+                    const randomIndex = Math.floor(Math.random() * names.length);
+                    const selectedName = names[randomIndex];
+                    diceElements[randomIndex].style.opacity = 1;
+                    rolling = false;
+                    setTimeout(() => {
+                        diceElements[randomIndex].style.opacity = 0;
                         setTimeout(() => {
-                            nameElements[randomIndex].style.transition = 'opacity 0.5s ease-in-out';
-                            nameElements[randomIndex].innerText = 'Congratulations!\n' + selectedName;
+                            diceElements[randomIndex].style.opacity = 1;
+                            diceElements[randomIndex].style.transition = 'opacity 0.5s ease-in-out';
+                            diceElements[randomIndex].innerText = 'Congratulations!\n' + selectedName;
                         }, 500);
-                    }
-                }, 50); // Adjust the interval for animation speed
+                    }, 2000);
+                }, 3000);
             }
         }
 
-        pickButton.addEventListener('click', tumbleNames);
+        pickButton.addEventListener('click', rollDice);
         loadNamesFromCSV();
     </script>
 </body>
