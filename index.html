@@ -7,6 +7,10 @@
         body {
             font-family: Arial, sans-serif;
             text-align: center;
+            background-image: url('background.jpg');
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center center;
         }
         #pickerContainer {
             width: 300px;
@@ -15,6 +19,7 @@
             border: 2px solid #333;
             overflow: hidden;
             position: relative;
+            background-color: rgba(255, 255, 255, 0.9);
         }
         .name {
             position: absolute;
@@ -27,11 +32,24 @@
             transition: opacity 0.5s ease-in-out;
         }
         .spinner {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             display: none;
+            animation: spin 2s linear infinite;
         }
         .flashing-text {
-            animation: flash 0.5s infinite alternate;
+            position: absolute;
+            top: 65%;
+            left: 50%;
+            transform: translateX(-50%);
             display: none;
+            animation: flash 0.5s infinite alternate;
+        }
+        @keyframes spin {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
         }
         @keyframes flash {
             from {
@@ -49,12 +67,12 @@
     </style>
 </head>
 <body>
-    <h1>V1.50</h1>
+    <h1>Random Name Picker</h1>
     <div id="pickerContainer">
         <!-- Names will be dynamically populated here -->
+        <div class="spinner">🌀</div>
+        <p class="flashing-text">Picking random name...</p>
     </div>
-    <div class="spinner">🌀</div>
-    <p class="flashing-text">Picking random name...</p>
     <button id="pickButton">Pick a Random Name</button>
 
     <script>
@@ -78,6 +96,7 @@
         }
 
         function populateNames() {
+            nameElements.length = 0; // Clear the array
             pickerContainer.innerHTML = '';
 
             names.forEach(name => {
@@ -95,7 +114,7 @@
             if (!picking && names.length > 0) {
                 picking = true;
 
-                spinner.style.display = 'inline';
+                spinner.style.display = 'block';
                 flashingText.style.display = 'block';
                 pickButton.disabled = true;
 
