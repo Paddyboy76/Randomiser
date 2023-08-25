@@ -7,7 +7,7 @@
         /* Your CSS styles here */
         body {
             font-family: Arial, sans-serif; 
-             text-align: center;
+            text-align: center;
             background-image: url('background.png');
             background-repeat: no-repeat;
             background-size: cover;
@@ -108,10 +108,10 @@
                 nameInfoElement.className = 'name-info';
                 nameInfoElement.style.opacity = 0;
                 nameInfoElement.innerHTML = `
-                    <p>${person.first} ${person.last}</p>
-                    <p>${person.id}</p>
+                    <p><strong>${person.first} ${person.last}</p></strong>
+                    <p><strong><font color="blue"> ${person.id} </font> </p> </strong>
                     <p>${person.dept1}</p>
-                    <p>${person.suptar}</p>
+                    <p><strong>${person.suptar}</p></strong>
                 `;
                 pickerContainer.appendChild(nameInfoElement);
                 nameElements.push(nameInfoElement);
