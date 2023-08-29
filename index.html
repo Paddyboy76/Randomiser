@@ -9,7 +9,7 @@
             color: white;
             font-family: Arial, sans-serif;
             text-align: center;
-            background-image: url('background.jpg');
+            background-image: url('background.png');
             background-repeat: no-repeat;
             background-size: cover;
             background-position: center top;
@@ -90,8 +90,21 @@
             const slowInterval = setInterval(() => {
                 currentIndex = (currentIndex + 1) % names.length;
                 const nameParts = names[currentIndex].split(',');
-                const formattedName = `${nameParts[2]} ${nameParts[3]} (${nameParts[4]}, ${nameParts[5]})`;
-                picker.textContent = formattedName;
+                const suptar = nameParts[0];
+                const id = nameParts[1];
+                const first = nameParts[2];
+                const last = nameParts[3];
+                const dept1 = nameParts[4];
+                const dept2 = nameParts[5];
+                const formattedInfo = `
+                    Suptar: ${suptar}
+                    ID: ${id}
+                    First Name: ${first}
+                    Last Name: ${last}
+                    Department 1: ${dept1}
+                    Department 2: ${dept2}
+                `;
+                picker.textContent = formattedInfo;
             }, 1000); // Adjust the interval for slower animation
 
             setTimeout(() => {
@@ -103,3 +116,4 @@
     </script>
 </body>
 </html>
+
