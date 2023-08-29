@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Super Star Bingo</title>
+    <title>Super Start Bingo</title>
     <meta charset="UTF-8">
     <style>
         body {
@@ -29,9 +29,9 @@
         }
 
         #spinner {
-            width: 50px; /* Adjust the width of the spinner image */
-            height: 50px; /* Adjust the height of the spinner image */
-            animation: spin 2s linear infinite; /* Add spinning animation */
+            width: 50px;
+            height: 50px;
+            animation: spin 2s linear infinite;
             margin-top: 20px;
         }
 
@@ -39,8 +39,8 @@
             font-size: 20px;
             font-weight: bold;
             margin-top: 20px;
-            opacity: 0; /* Initially hidden */
-            transition: opacity 1s ease-in-out; /* Fade-in effect */
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
         }
 
         #reveal-button {
@@ -63,8 +63,8 @@
     <div id="picker-container">
         <h1>Super Star Bingo</h1>
         <img id="spinner" src="spinner.png" alt="Spinning Wheel">
-        <pre id="picker"></pre>
-        <button id="reveal-button">Reveal Random Name</button>
+        <pre id="picker" style="color: yellow;"></pre>
+        <button id="reveal-button">Spin!</button>
     </div>
 
     <script>
@@ -84,40 +84,47 @@
         const revealButton = document.getElementById("reveal-button");
 
         revealButton.addEventListener("click", () => {
-            revealButton.disabled = true; // Disable button during animation
-            spinner.style.display = "inline"; // Display the spinner
+            revealButton.disabled = true;
+            spinner.style.display = "inline";
 
             animationInterval = setInterval(() => {
                 picker.textContent = names[Math.floor(Math.random() * names.length)];
-            }, 100); // Adjust the interval to control animation speed
+            }, 50);
 
             setTimeout(() => {
                 clearInterval(animationInterval);
                 const winningName = names[Math.floor(Math.random() * names.length)];
                 formatAndDisplayWinner(winningName);
-            }, 5000); // Adjust the duration before revealing the name
+            }, 3000);
         });
 
         function formatAndDisplayWinner(name) {
             const nameParts = name.split(',');
-            const suptar = nameParts[0];
-            const id = nameParts[1];
-            const first = nameParts[2];
-            const last = nameParts[3];
-            const dept1 = nameParts[4];
-            const dept2 = nameParts[5];
-            
-            picker.textContent = `Winner:
-${suptar}
-${id}
-${first}
-${last}
-${dept1}
-${dept2}`;
-            
-            picker.style.opacity = 1; // Reveal the winning name
-            spinner.style.display = "none"; // Hide the spinner
-            revealButton.disabled = false; // Enable button
+            const suptar = `Suptar: ${nameParts[0]}`;
+            const id = `ID: ${nameParts[1]}`;
+            const first = `First Name: ${nameParts[2]}`;
+            const last = `Last Name: ${nameParts[3]}`;
+            const dept1 = `Department 1: ${nameParts[4]}`;
+            const dept2 = `Department 2: ${nameParts[5]}`;
+
+            const lines = [suptar, id, first, last, dept1, dept2];
+            let lineIndex = 0;
+
+            picker.style.opacity = 0;
+            spinner.style.display = "inline";
+
+            animationInterval = setInterval(() => {
+                picker.textContent = lines[lineIndex];
+                lineIndex = (lineIndex + 1) % lines.length;
+
+                if (lineIndex === 0) {
+                    clearInterval(animationInterval);
+                    picker.textContent = lines[lines.length - 1];
+                    picker.style.opacity = 1;
+                    spinner.style.display = "none";
+                    revealButton.disabled = false;
+                }
+            }, 200);
         }
     </script>
 </body>
