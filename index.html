@@ -94,12 +94,31 @@
             setTimeout(() => {
                 clearInterval(animationInterval);
                 const winningName = names[Math.floor(Math.random() * names.length)];
-                picker.textContent = `Winner: ${winningName}`;
-                picker.style.opacity = 1; // Reveal the winning name
-                spinner.style.display = "none"; // Hide the spinner
-                revealButton.disabled = false; // Enable button
+                formatAndDisplayWinner(winningName);
             }, 3000); // Adjust the duration before revealing the name
         });
+
+        function formatAndDisplayWinner(name) {
+            const nameParts = name.split(',');
+            const suptar = nameParts[0];
+            const id = nameParts[1];
+            const first = nameParts[2];
+            const last = nameParts[3];
+            const dept1 = nameParts[4];
+            const dept2 = nameParts[5];
+            
+            picker.textContent = `Winner:
+            Suptar: ${suptar}
+            ID: ${id}
+            First Name: ${first}
+            Last Name: ${last}
+            Department 1: ${dept1}
+            Department 2: ${dept2}`;
+            
+            picker.style.opacity = 1; // Reveal the winning name
+            spinner.style.display = "none"; // Hide the spinner
+            revealButton.disabled = false; // Enable button
+        }
     </script>
 </body>
 </html>
