@@ -25,7 +25,7 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            background-color: rgba(0, 0, 0, 0.6);
+            background-color: rgba(0, 0, 0, 0.5);
         }
 
         #spinner {
@@ -92,22 +92,22 @@
 
             animationInterval = setInterval(() => {
                 picker.textContent = names[Math.floor(Math.random() * names.length)];
-            }, 50);
+            }, 500);
 
             setTimeout(() => {
                 clearInterval(animationInterval);
                 const winningName = names[Math.floor(Math.random() * names.length)];
                 formatAndDisplayWinner(winningName);
-            }, 3000);
+            }, 5000);
         });
 
         function formatAndDisplayWinner(name) {
             const nameParts = name.split(',');
-            const fullName = `<span>Name: ${nameParts[2]} ${nameParts[3]}</span><br>`;
+            const fullName = `<span>${nameParts[2]} ${nameParts[3]}</span><br>`;
             const suptar = `<span style="color:yellow">${nameParts[0]}</span><br>`;
             const id = `<span>Staff ID: ${nameParts[1]}</span><br>`;
             const dept1 = `<span>${nameParts[4]}</span><br>`;
-            const dept2 = `<span>Department 2: ${nameParts[5]}</span><br>`;
+            const dept2 = `<span>${nameParts[5]}</span><br>`;
 
             const lines = [fullName, suptar, id, dept1, dept2];
             let lineIndex = 0;
