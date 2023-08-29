@@ -9,7 +9,7 @@
             color: white;
             font-family: Arial, sans-serif;
             text-align: center;
-            background-image: url('background.png');
+            background-image: url('background.jpg');
             background-repeat: no-repeat;
             background-size: cover;
             background-position: center top;
@@ -33,14 +33,7 @@
             font-weight: bold;
             margin-top: 20px;
             opacity: 0; /* Initially hidden */
-            animation: spin 3s linear infinite; /* Spinning animation */
             transition: opacity 1s ease-in-out; /* Fade-in effect */
-        }
-
-        /* Spinning animation for the names */
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
         }
 
         #reveal-button {
@@ -92,11 +85,13 @@
         function animateSlowlyThroughNames() {
             let currentIndex = 0;
             picker.style.animation = "none"; // Remove spinning animation
-            picker.textContent = names[currentIndex];
+            picker.style.fontSize = "24px"; // Adjust the font size for revealed name
 
             const slowInterval = setInterval(() => {
                 currentIndex = (currentIndex + 1) % names.length;
-                picker.textContent = names[currentIndex];
+                const nameParts = names[currentIndex].split(',');
+                const formattedName = `${nameParts[2]} ${nameParts[3]} (${nameParts[4]}, ${nameParts[5]})`;
+                picker.textContent = formattedName;
             }, 1000); // Adjust the interval for slower animation
 
             setTimeout(() => {
