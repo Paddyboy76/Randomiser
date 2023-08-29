@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Super Star Bingo</title>
+    <title>Random Name Picker</title>
     <meta charset="UTF-8">
     <style>
         body {
@@ -25,7 +25,7 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            background-color: rgba(0, 0, 0, 0.6);
+            background-color: rgba(0, 0, 0, 0.9);
         }
 
         #spinner {
@@ -65,7 +65,7 @@
 </head>
 <body>
     <div id="picker-container">
-        <h1>Super Star Bingo</h1>
+        <h1>Random Name Picker</h1>
         <img id="spinner" src="spinner.png" alt="Spinning Wheel">
         <pre id="picker"></pre>
         <button id="reveal-button">Reveal Random Name</button>
@@ -93,13 +93,13 @@
 
             animationInterval = setInterval(() => {
                 picker.textContent = names[Math.floor(Math.random() * names.length)];
-            }, 300);
+            }, 50);
 
             setTimeout(() => {
                 clearInterval(animationInterval);
                 const winningName = names[Math.floor(Math.random() * names.length)];
                 formatAndDisplayWinner(winningName);
-            }, 5000);
+            }, 3000);
         });
 
         function formatAndDisplayWinner(name) {
@@ -118,10 +118,10 @@
             spinner.style.display = "inline";
 
             animationInterval = setInterval(() => {
-                picker.innerHTML = lines[lineIndex];
-                lineIndex = (lineIndex + 1) % lines.length;
+                picker.innerHTML = lines.slice(0, lineIndex + 1).join('');
+                lineIndex++;
 
-                if (lineIndex === 0) {
+                if (lineIndex === lines.length) {
                     clearInterval(animationInterval);
                     picker.style.opacity = 1;
                     spinner.style.display = "none";
