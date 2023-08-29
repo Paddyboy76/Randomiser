@@ -89,13 +89,13 @@
 
             animationInterval = setInterval(() => {
                 picker.textContent = names[Math.floor(Math.random() * names.length)];
-            }, 50); // Adjust the interval to control animation speed
+            }, 100); // Adjust the interval to control animation speed
 
             setTimeout(() => {
                 clearInterval(animationInterval);
                 const winningName = names[Math.floor(Math.random() * names.length)];
                 formatAndDisplayWinner(winningName);
-            }, 3000); // Adjust the duration before revealing the name
+            }, 5000); // Adjust the duration before revealing the name
         });
 
         function formatAndDisplayWinner(name) {
@@ -108,12 +108,12 @@
             const dept2 = nameParts[5];
             
             picker.textContent = `Winner:
-Suptar: ${suptar}
-ID: ${id}
-First Name: ${first}
-Last Name: ${last}
-Department 1: ${dept1}
-Department 2: ${dept2}`;
+${suptar}
+${id}
+${first}
+${last}
+${dept1}
+${dept2}`;
             
             picker.style.opacity = 1; // Reveal the winning name
             spinner.style.display = "none"; // Hide the spinner
