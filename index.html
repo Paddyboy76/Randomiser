@@ -63,7 +63,7 @@
     <div id="picker-container">
         <h1>Random Name Picker</h1>
         <img id="spinner" src="spinner.png" alt="Spinning Wheel">
-        <p id="picker"></p>
+        <pre id="picker"></pre>
         <button id="reveal-button">Reveal Random Name</button>
     </div>
 
@@ -107,13 +107,13 @@
             const dept1 = nameParts[4];
             const dept2 = nameParts[5];
             
-            picker.textContent = `<br>Winner:
-            <p>Suptar: ${suptar}</p>
-            <p>ID: ${id}</p>
-            <p>First Name: ${first}</p>
-            <p>Last Name: ${last}</p>
-            <p>Department 1: ${dept1}</p>
-            <p>Department 2: ${dept2}</p>`;
+            picker.textContent = `Winner:
+Suptar: ${suptar}
+ID: ${id}
+First Name: ${first}
+Last Name: ${last}
+Department 1: ${dept1}
+Department 2: ${dept2}`;
             
             picker.style.opacity = 1; // Reveal the winning name
             spinner.style.display = "none"; // Hide the spinner
