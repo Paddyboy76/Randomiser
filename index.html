@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Super Star Bingo</title>
+    <title>Random Name Picker</title>
     <meta charset="UTF-8">
     <style>
         body {
@@ -9,7 +9,7 @@
             color: white;
             font-family: Arial, sans-serif;
             text-align: center;
-            background-image: url('background.png');
+            background-image: url('background.jpg');
             background-repeat: no-repeat;
             background-size: cover;
             background-position: center top;
@@ -33,7 +33,6 @@
             font-weight: bold;
             margin-top: 20px;
             opacity: 0; /* Initially hidden */
-            animation: spin 3s linear infinite; /* Spinning animation */
             transition: opacity 1s ease-in-out; /* Fade-in effect */
         }
 
@@ -55,13 +54,14 @@
 </head>
 <body>
     <div id="picker-container">
-        <h1>Super Star Bingo</h1>
+        <h1>Random Name Picker</h1>
         <p id="picker"></p>
         <button id="reveal-button">Reveal Random Name</button>
     </div>
 
     <script>
         let names = [];
+        let animationInterval;
 
         fetch('names.csv')
             .then(response => response.text())
@@ -78,16 +78,29 @@
         revealButton.addEventListener("click", () => {
             revealButton.disabled = true; // Disable button during animation
 
-            const animationInterval = setInterval(() => {
+            animationInterval = setInterval(() => {
                 picker.textContent = names[Math.floor(Math.random() * names.length)];
             }, 50); // Adjust the interval to control animation speed
 
             setTimeout(() => {
                 clearInterval(animationInterval);
+                animateSlowlyThroughNames();
+            }, 3000); // Adjust the duration before revealing the name
+        });
+
+        function animateSlowlyThroughNames() {
+            let currentIndex = 0;
+            const slowInterval = setInterval(() => {
+                picker.textContent = names[currentIndex];
+                currentIndex = (currentIndex + 1) % names.length;
+            }, 1000); // Adjust the interval for slower animation
+
+            setTimeout(() => {
+                clearInterval(slowInterval);
                 picker.style.opacity = 1; // Reveal the picked name
                 revealButton.disabled = false; // Enable button
-            }, 1500); // Adjust the duration before revealing the name
-        });
+            }, 5000); // Adjust the duration for slower animation
+        }
     </script>
 </body>
 </html>
