@@ -56,6 +56,11 @@
             cursor: pointer;
         }
 
+        #countdown {
+            font-size: 18px;
+            margin-top: 10px;
+        }
+
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
@@ -68,28 +73,38 @@
         <img id="spinner" src="spinner.png" alt="Spinning Wheel">
         <pre id="picker"></pre>
         <button id="reveal-button">Reveal Random Name</button>
+        <p id="countdown"></p>
     </div>
 
     <script>
         let names = [];
         let animationInterval;
 
-        fetch('names.csv')
-            .then(response => response.text())
-            .then(data => {
-                names = data.split('\n');
-                names.shift(); // Remove header
-            })
-            .catch(error => console.error('Error loading names:', error));
-
         const picker = document.getElementById("picker");
         const spinner = document.getElementById("spinner");
         const revealButton = document.getElementById("reveal-button");
+        const countdownElement = document.getElementById("countdown");
 
         revealButton.addEventListener("click", () => {
             revealButton.disabled = true;
             spinner.style.display = "inline";
+            countdownElement.textContent = "Picking a Random Name...";
 
+            if (names.length === 0) {
+                fetch('names.csv')
+                    .then(response => response.text())
+                    .then(data => {
+                        names = data.split('\n');
+                        names.shift(); // Remove header
+                        startRandomAnimation();
+                    })
+                    .catch(error => console.error('Error loading names:', error));
+            } else {
+                startRandomAnimation();
+            }
+        });
+
+        function startRandomAnimation() {
             animationInterval = setInterval(() => {
                 picker.textContent = names[Math.floor(Math.random() * names.length)];
             }, 500);
@@ -98,34 +113,43 @@
                 clearInterval(animationInterval);
                 const winningName = names[Math.floor(Math.random() * names.length)];
                 formatAndDisplayWinner(winningName);
+                startCountdown();
             }, 5000);
-        });
+        }
 
         function formatAndDisplayWinner(name) {
             const nameParts = name.split(',');
-            const fullName = `<span>${nameParts[2]} ${nameParts[3]}</span><br>`;
-            const suptar = `<span style="color:yellow">${nameParts[0]}</span><br>`;
-            const id = `<span>Staff ID: ${nameParts[1]}</span><br>`;
-            const dept1 = `<span>${nameParts[4]}</span><br>`;
-            const dept2 = `<span>${nameParts[5]}</span><br>`;
+            const suptar = `<span style="color: yellow;">${nameParts[0]}</span>`;
+            const id = `<span>Staff ID: ${nameParts[1]}</span>`;
+            const first = `<span>First Name: ${nameParts[2]}</span>`;
+            const last = `<span>Last Name: ${nameParts[3]}</span>`;
+            const dept1 = `<span>Department 1: ${nameParts[4]}</span>`;
+            const dept2 = `<span>Department 2: ${nameParts[5]}</span>`;
 
-            const lines = [fullName, suptar, id, dept1, dept2];
-            let lineIndex = 0;
+            const formattedText = `${suptar}<br>${id}<br>${first}<br>${last}<br>${dept1}<br>${dept2}`;
+            picker.innerHTML = formattedText;
 
             picker.style.opacity = 1;
-            spinner.style.display = "inline";
+            spinner.style.display = "none";
+            revealButton.disabled = false;
 
-            animationInterval = setInterval(() => {
-                picker.innerHTML = lines.slice(0, lineIndex + 1).join('');
-                lineIndex++;
+            revealButton.textContent = "Reveal Another Random Name";
+        }
 
-                if (lineIndex === lines.length) {
-                    clearInterval(animationInterval);
-                    picker.style.opacity = 1;
-                    spinner.style.display = "none";
+        let countdown = 5;
+        let countdownInterval;
+
+        function startCountdown() {
+            countdownInterval = setInterval(() => {
+                countdownElement.textContent = `Next name in ${countdown} seconds`;
+                countdown--;
+
+                if (countdown < 0) {
+                    clearInterval(countdownInterval);
+                    countdownElement.textContent = "";
                     revealButton.disabled = false;
                 }
-            }, 200);
+            }, 1000);
         }
     </script>
 </body>
