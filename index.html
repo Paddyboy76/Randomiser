@@ -25,7 +25,7 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            background-color: rgba(0, 0, 0, 0.9);
+            background-color: rgba(0, 0, 0, 0.5);
         }
 
         #spinner {
@@ -71,62 +71,64 @@
     </div>
 
     <script>
-        let names = [];
-        let animationInterval;
+    let names = [];
+    let animationInterval;
 
-        fetch('names.csv')
-            .then(response => response.text())
-            .then(data => {
-                names = data.split('\n');
-                names.shift(); // Remove header
-            })
-            .catch(error => console.error('Error loading names:', error));
+    fetch('names.csv')
+        .then(response => response.text())
+        .then(data => {
+            names = data.split('\n');
+            names.shift(); // Remove header
+        })
+        .catch(error => console.error('Error loading names:', error));
 
-        const picker = document.getElementById("picker");
-        const spinner = document.getElementById("spinner");
-        const revealButton = document.getElementById("reveal-button");
+    const picker = document.getElementById("picker");
+    const spinner = document.getElementById("spinner");
+    const revealButton = document.getElementById("reveal-button");
 
-        revealButton.addEventListener("click", () => {
-            revealButton.disabled = true;
-            spinner.style.display = "inline";
+    function startAnimation() {
+        revealButton.disabled = true;
+        spinner.style.display = "inline";
 
-            animationInterval = setInterval(() => {
-                picker.textContent = names[Math.floor(Math.random() * names.length)];
-            }, 500);
+        animationInterval = setInterval(() => {
+            picker.textContent = names[Math.floor(Math.random() * names.length)];
+        }, 50);
 
-            setTimeout(() => {
+        setTimeout(() => {
+            clearInterval(animationInterval);
+            const winningName = names[Math.floor(Math.random() * names.length)];
+            formatAndDisplayWinner(winningName);
+        }, 3000);
+    }
+
+    revealButton.addEventListener("click", startAnimation);
+
+    function formatAndDisplayWinner(name) {
+        const nameParts = name.split(',');
+        const fullName = `<span>Name: ${nameParts[2]} ${nameParts[3]}</span><br>`;
+        const suptar = `<span style="color:yellow">Suptar: ${nameParts[0]}</span><br>`;
+        const id = `<span>ID: ${nameParts[1]}</span><br>`;
+        const dept1 = `<span>Department 1: ${nameParts[4]}</span><br>`;
+        const dept2 = `<span>Department 2: ${nameParts[5]}</span><br>`;
+
+        const lines = [fullName, suptar, id, dept1, dept2];
+        let lineIndex = 0;
+
+        picker.style.opacity = 0;
+        spinner.style.display = "inline";
+
+        animationInterval = setInterval(() => {
+            picker.innerHTML = lines.slice(0, lineIndex + 1).join('');
+            lineIndex++;
+
+            if (lineIndex === lines.length) {
                 clearInterval(animationInterval);
-                const winningName = names[Math.floor(Math.random() * names.length)];
-                formatAndDisplayWinner(winningName);
-            }, 5000);
-        });
-
-        function formatAndDisplayWinner(name) {
-            const nameParts = name.split(',');
-            const suptar = `<span style="color:yellow">Suptar: ${nameParts[0]}</span><br>`;
-            const fullName = `<span>Name: ${nameParts[2]} ${nameParts[3]}</span><br>`;
-            const id = `<span>ID: ${nameParts[1]}</span><br>`;
-            const dept1 = `<span>${nameParts[4]}</span><br>`;
-            const dept2 = `<span>${nameParts[5]}</span><br>`;
-
-            const lines = [fullName, suptar, id, dept1, dept2];
-            let lineIndex = 0;
-
-            picker.style.opacity = 0;
-            spinner.style.display = "inline";
-
-            animationInterval = setInterval(() => {
-                picker.innerHTML = lines.slice(0, lineIndex + 1).join('');
-                lineIndex++;
-
-                if (lineIndex === lines.length) {
-                    clearInterval(animationInterval);
-                    picker.style.opacity = 1;
-                    spinner.style.display = "none";
-                    revealButton.disabled = false;
-                }
-            }, 200);
-        }
-    </script>
+                picker.style.opacity = 1;
+                spinner.style.display = "none";
+                revealButton.disabled = false;
+            }
+        }, 200);
+    }
+</script>
 </body>
 </html>
