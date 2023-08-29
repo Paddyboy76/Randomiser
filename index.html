@@ -9,11 +9,12 @@
             color: white;
             font-family: Arial, sans-serif;
             text-align: center;
-            background-image: url('background.png');
+            background-image: url('background.jpg');
             background-repeat: no-repeat;
             background-size: cover;
             background-position: center top;
         }
+
         #picker-container {
             width: 300px;
             height: 500px;
@@ -24,14 +25,16 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            background-color: rgba(0, 0, 0, 0.9);
+            background-color: rgba(0, 0, 0, 0.6);
         }
+
         #spinner {
             width: 50px;
             height: 50px;
             animation: spin 2s linear infinite;
             margin-top: 20px;
         }
+
         #picker {
             font-size: 20px;
             font-weight: bold;
@@ -43,6 +46,7 @@
             padding-left: 10px;
             line-height: 1.5;
         }
+
         #reveal-button {
             margin-top: 20px;
             padding: 10px 20px;
@@ -51,6 +55,7 @@
             border: none;
             cursor: pointer;
         }
+
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
@@ -64,9 +69,11 @@
         <pre id="picker"></pre>
         <button id="reveal-button">Reveal Random Name</button>
     </div>
+
     <script>
         let names = [];
         let animationInterval;
+
         fetch('names.csv')
             .then(response => response.text())
             .then(data => {
@@ -74,40 +81,44 @@
                 names.shift(); // Remove header
             })
             .catch(error => console.error('Error loading names:', error));
+
         const picker = document.getElementById("picker");
         const spinner = document.getElementById("spinner");
         const revealButton = document.getElementById("reveal-button");
+
         revealButton.addEventListener("click", () => {
             revealButton.disabled = true;
             spinner.style.display = "inline";
+
             animationInterval = setInterval(() => {
                 picker.textContent = names[Math.floor(Math.random() * names.length)];
-            }, 500);
+            }, 50);
+
             setTimeout(() => {
                 clearInterval(animationInterval);
                 const winningName = names[Math.floor(Math.random() * names.length)];
                 formatAndDisplayWinner(winningName);
-            }, 5000);
+            }, 3000);
         });
 
         function formatAndDisplayWinner(name) {
             const nameParts = name.split(',');
-            const suptar = `<span style="color:yellow">Suptar: ${nameParts[0]}</span><br>`;
             const fullName = `<span>Name: ${nameParts[2]} ${nameParts[3]}</span><br>`;
             const suptar = `<span>Suptar: ${nameParts[0]}</span><br>`;
             const id = `<span>ID: ${nameParts[1]}</span><br>`;
             const dept1 = `<span>Department 1: ${nameParts[4]}</span><br>`;
             const dept2 = `<span>Department 2: ${nameParts[5]}</span><br>`;
-            const dept1 = `<span>${nameParts[4]}</span><br>`;
-            const dept2 = `<span>${nameParts[5]}</span><br>`;
 
             const lines = [fullName, suptar, id, dept1, dept2];
             let lineIndex = 0;
+
             picker.style.opacity = 0;
             spinner.style.display = "inline";
+
             animationInterval = setInterval(() => {
                 picker.innerHTML = lines.slice(0, lineIndex + 1).join('');
                 lineIndex++;
+
                 if (lineIndex === lines.length) {
                     clearInterval(animationInterval);
                     picker.style.opacity = 1;
