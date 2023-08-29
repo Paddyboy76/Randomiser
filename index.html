@@ -47,11 +47,6 @@
             line-height: 1.5;
         }
 
-        #countdown {
-            margin-top: 10px;
-            font-size: 16px;
-        }
-
         #reveal-button {
             margin-top: 20px;
             padding: 10px 20px;
@@ -59,15 +54,6 @@
             color: white;
             border: none;
             cursor: pointer;
-        }
-
-        #reveal-button:hover {
-            background-color: #2980b9;
-        }
-
-        #reveal-button:disabled {
-            background-color: #7f8c8d;
-            cursor: not-allowed;
         }
 
         @keyframes spin {
@@ -82,7 +68,6 @@
         <img id="spinner" src="spinner.png" alt="Spinning Wheel">
         <pre id="picker"></pre>
         <button id="reveal-button">Reveal Random Name</button>
-        <div id="countdown"></div>
     </div>
 
     <script>
@@ -100,30 +85,10 @@
         const picker = document.getElementById("picker");
         const spinner = document.getElementById("spinner");
         const revealButton = document.getElementById("reveal-button");
-        const countdownElement = document.getElementById("countdown");
-
-        function startCountdown() {
-            let seconds = 5; // Countdown duration in seconds
-            countdownElement.textContent = `Time remaining: ${seconds} seconds`;
-
-            const countdownInterval = setInterval(() => {
-                seconds--;
-
-                if (seconds === 0) {
-                    clearInterval(countdownInterval);
-                    countdownElement.textContent = "";
-                    revealButton.textContent = "Reveal Random Name";
-                    revealButton.disabled = false;
-                } else {
-                    countdownElement.textContent = `Time remaining: ${seconds} seconds`;
-                }
-            }, 1000);
-        }
 
         revealButton.addEventListener("click", () => {
             revealButton.disabled = true;
             spinner.style.display = "inline";
-            countdownElement.textContent = "Picking a Random Name...";
 
             animationInterval = setInterval(() => {
                 picker.textContent = names[Math.floor(Math.random() * names.length)];
@@ -133,27 +98,34 @@
                 clearInterval(animationInterval);
                 const winningName = names[Math.floor(Math.random() * names.length)];
                 formatAndDisplayWinner(winningName);
-                startCountdown();
             }, 5000);
         });
 
-               function formatAndDisplayWinner(name) {
+        function formatAndDisplayWinner(name) {
             const nameParts = name.split(',');
-            const suptar = `<span style="color: yellow;">${nameParts[0]}</span>`;
-            const id = `<span>Staff ID: ${nameParts[1]}</span>`;
-            const first = `<span>First Name: ${nameParts[2]}</span>`;
-            const last = `<span>Last Name: ${nameParts[3]}</span>`;
-            const dept1 = `<span>Department 1: ${nameParts[4]}</span>`;
-            const dept2 = `<span>Department 2: ${nameParts[5]}</span>`;
+            const fullName = `<span>${nameParts[2]} ${nameParts[3]}</span><br>`;
+            const suptar = `<span style="color:yellow">${nameParts[0]}</span><br>`;
+            const id = `<span>Staff ID: ${nameParts[1]}</span><br>`;
+            const dept1 = `<span>${nameParts[4]}</span><br>`;
+            const dept2 = `<span>${nameParts[5]}</span><br>`;
 
-            const formattedText = `${suptar}<br>${id}<br>${first}<br>${last}<br>${dept1}<br>${dept2}`;
-            picker.innerHTML = formattedText;
+            const lines = [fullName, suptar, id, dept1, dept2];
+            let lineIndex = 0;
 
-            picker.style.opacity = 1;
-            spinner.style.display = "none";
-            revealButton.disabled = false;
+            picker.style.opacity = 0;
+            spinner.style.display = "inline";
 
-            revealButton.textContent = "Reveal Another Random Name";
+            animationInterval = setInterval(() => {
+                picker.innerHTML = lines.slice(0, lineIndex + 1).join('');
+                lineIndex++;
+
+                if (lineIndex === lines.length) {
+                    clearInterval(animationInterval);
+                    picker.style.opacity = 1;
+                    spinner.style.display = "none";
+                    revealButton.disabled = false;
+                }
+            }, 200);
         }
     </script>
 </body>
