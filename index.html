@@ -21,7 +21,7 @@
             border: 2px solid white;
             margin: 50px auto;
             padding: 20px;
-            display: flex;
+            display: none;
             flex-direction: column;
             justify-content: center;
             align-items: center;
@@ -65,7 +65,7 @@
 </head>
 <body>
     <div id="picker-container">
-        <h1>Random Name Picker</h1>
+        <h1>Super Star Bingo</h1>
         <img id="spinner" src="spinner.png" alt="Spinning Wheel">
         <pre id="picker"></pre>
         <button id="reveal-button">Reveal Random Name</button>
@@ -104,12 +104,12 @@
 
         function formatAndDisplayWinner(name) {
             const nameParts = name.split(',');
-            const suptar = `<span>Suptar: ${nameParts[0]}</span><br>`;
-            const id = `<span>ID: ${nameParts[1]}</span><br>`;
-            const first = `<span>First Name: ${nameParts[2]}</span><br>`;
-            const last = `<span>Last Name: ${nameParts[3]}</span><br>`;
-            const dept1 = `<span>Department 1: ${nameParts[4]}</span><br>`;
-            const dept2 = `<span>Department 2: ${nameParts[5]}</span><br>`;
+            const suptar = `<span>${nameParts[0]}</span><br>`;
+            const id = `<span>${nameParts[1]}</span><br>`;
+            const first = `<span>${nameParts[2]}</span><br>`;
+            const last = `<span>${nameParts[3]}</span><br>`;
+            const dept1 = `<span>${nameParts[4]}</span><br>`;
+            const dept2 = `<span>${nameParts[5]}</span><br>`;
 
             const lines = [suptar, id, first, last, dept1, dept2];
             let lineIndex = 0;
