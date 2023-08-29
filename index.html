@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Super Start Bingo</title>
+    <title>Random Name Picker</title>
     <meta charset="UTF-8">
     <style>
         body {
@@ -9,7 +9,7 @@
             color: white;
             font-family: Arial, sans-serif;
             text-align: center;
-            background-image: url('background.png');
+            background-image: url('background.jpg');
             background-repeat: no-repeat;
             background-size: cover;
             background-position: center top;
@@ -61,10 +61,10 @@
 </head>
 <body>
     <div id="picker-container">
-        <h1>Super Star Bingo</h1>
+        <h1>Random Name Picker</h1>
         <img id="spinner" src="spinner.png" alt="Spinning Wheel">
-        <pre id="picker" style="color: yellow;"></pre>
-        <button id="reveal-button">Spin!</button>
+        <pre id="picker" style="color: white;"></pre>
+        <button id="reveal-button">Reveal Random Name</button>
     </div>
 
     <script>
@@ -114,12 +114,11 @@
             spinner.style.display = "inline";
 
             animationInterval = setInterval(() => {
-                picker.textContent = lines[lineIndex];
+                picker.innerHTML = lines[lineIndex];
                 lineIndex = (lineIndex + 1) % lines.length;
 
                 if (lineIndex === 0) {
                     clearInterval(animationInterval);
-                    picker.textContent = lines[lines.length - 1];
                     picker.style.opacity = 1;
                     spinner.style.display = "none";
                     revealButton.disabled = false;
