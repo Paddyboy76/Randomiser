@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Super Star Bingo</title>
+    <title>Random Name Picker</title>
     <meta charset="UTF-8">
     <style>
         body {
@@ -9,7 +9,7 @@
             color: white;
             font-family: Arial, sans-serif;
             text-align: center;
-            background-image: url('background.png');
+            background-image: url('background.jpg');
             background-repeat: no-repeat;
             background-size: cover;
             background-position: center top;
@@ -41,6 +41,10 @@
             margin-top: 20px;
             opacity: 0;
             transition: opacity 1s ease-in-out;
+            color: white;
+            text-align: left;
+            padding-left: 10px;
+            line-height: 1.5;
         }
 
         #reveal-button {
@@ -63,7 +67,7 @@
     <div id="picker-container">
         <h1>Random Name Picker</h1>
         <img id="spinner" src="spinner.png" alt="Spinning Wheel">
-        <pre id="picker" style="color: white;"></pre>
+        <pre id="picker"></pre>
         <button id="reveal-button">Reveal Random Name</button>
     </div>
 
@@ -100,12 +104,12 @@
 
         function formatAndDisplayWinner(name) {
             const nameParts = name.split(',');
-            const suptar = `Suptar: ${nameParts[0]}`;
-            const id = `ID: ${nameParts[1]}`;
-            const first = `First Name: ${nameParts[2]}`;
-            const last = `Last Name: ${nameParts[3]}`;
-            const dept1 = `Department 1: ${nameParts[4]}`;
-            const dept2 = `Department 2: ${nameParts[5]}`;
+            const suptar = `<span>Suptar: ${nameParts[0]}</span><br>`;
+            const id = `<span>ID: ${nameParts[1]}</span><br>`;
+            const first = `<span>First Name: ${nameParts[2]}</span><br>`;
+            const last = `<span>Last Name: ${nameParts[3]}</span><br>`;
+            const dept1 = `<span>Department 1: ${nameParts[4]}</span><br>`;
+            const dept2 = `<span>Department 2: ${nameParts[5]}</span><br>`;
 
             const lines = [suptar, id, first, last, dept1, dept2];
             let lineIndex = 0;
