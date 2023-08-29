@@ -31,6 +31,7 @@
         #spinner {
             width: 50px; /* Adjust the width of the spinner image */
             height: 50px; /* Adjust the height of the spinner image */
+            animation: spin 2s linear infinite; /* Add spinning animation */
             margin-top: 20px;
         }
 
@@ -50,12 +51,18 @@
             border: none;
             cursor: pointer;
         }
+
+        /* Define spinning animation */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
     <div id="picker-container">
         <h1>Random Name Picker</h1>
-        <img id="spinner" src="spinner.gif" alt="Spinning Wheel">
+        <img id="spinner" src="spinner.png" alt="Spinning Wheel">
         <p id="picker"></p>
         <button id="reveal-button">Reveal Random Name</button>
     </div>
@@ -72,7 +79,6 @@
             })
             .catch(error => console.error('Error loading names:', error));
 
-        const pickerContainer = document.getElementById("picker-container");
         const picker = document.getElementById("picker");
         const spinner = document.getElementById("spinner");
         const revealButton = document.getElementById("reveal-button");
@@ -87,42 +93,13 @@
 
             setTimeout(() => {
                 clearInterval(animationInterval);
-                animateSlowlyThroughNames();
-            }, 3000); // Adjust the duration before revealing the name
-        });
-
-        function animateSlowlyThroughNames() {
-            let currentIndex = 0;
-            picker.style.animation = "none"; // Remove spinning animation
-            picker.style.fontSize = "24px"; // Adjust the font size for revealed name
-
-            const slowInterval = setInterval(() => {
-                currentIndex = (currentIndex + 1) % names.length;
-                const nameParts = names[currentIndex].split(',');
-                const suptar = nameParts[0];
-                const id = nameParts[1];
-                const first = nameParts[2];
-                const last = nameParts[3];
-                const dept1 = nameParts[4];
-                const dept2 = nameParts[5];
-                const formattedInfo = `
-                    Suptar: ${suptar}
-                    ID: ${id}
-                    First Name: ${first}
-                    Last Name: ${last}
-                    Department 1: ${dept1}
-                    Department 2: ${dept2}
-                `;
-                picker.textContent = formattedInfo;
-            }, 1000); // Adjust the interval for slower animation
-
-            setTimeout(() => {
-                clearInterval(slowInterval);
-                picker.style.opacity = 1; // Reveal the picked name
+                const winningName = names[Math.floor(Math.random() * names.length)];
+                picker.textContent = `Winner: ${winningName}`;
+                picker.style.opacity = 1; // Reveal the winning name
                 spinner.style.display = "none"; // Hide the spinner
                 revealButton.disabled = false; // Enable button
-            }, 5000); // Adjust the duration for slower animation
-        }
+            }, 3000); // Adjust the duration before revealing the name
+        });
     </script>
 </body>
 </html>
