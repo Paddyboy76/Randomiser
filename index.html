@@ -57,6 +57,19 @@
             font-size: 18px;
             cursor: pointer;
         }
+
+     /* Spinning animation for the button */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Apply spinning animation to the button when it's disabled */
+        #reveal-button:disabled {
+            animation: spin 1s linear infinite;
+        }
+
+        
     </style>
 </head>
 <body>
