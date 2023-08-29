@@ -103,11 +103,11 @@
 
         function formatAndDisplayWinner(name) {
             const nameParts = name.split(',');
+            const suptar = `<span style="color:yellow">Suptar: ${nameParts[0]}</span><br>`;
             const fullName = `<span>Name: ${nameParts[2]} ${nameParts[3]}</span><br>`;
-            const suptar = `<span>Suptar: ${nameParts[0]}</span><br>`;
             const id = `<span>ID: ${nameParts[1]}</span><br>`;
-            const dept1 = `<span>Department 1: ${nameParts[4]}</span><br>`;
-            const dept2 = `<span>Department 2: ${nameParts[5]}</span><br>`;
+            const dept1 = `<span>${nameParts[4]}</span><br>`;
+            const dept2 = `<span>${nameParts[5]}</span><br>`;
 
             const lines = [fullName, suptar, id, dept1, dept2];
             let lineIndex = 0;
