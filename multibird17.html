@@ -103,13 +103,11 @@
 
         function formatAndDisplayWinner(name) {
             const nameParts = name.split(',');
-            const fullName = `<span>${nameParts[2]} ${nameParts[3]}</span><br>`;
-            const suptar = `<span style="color:yellow">${nameParts[0]}</span><br>`;
-            const id = `<span>Staff ID: ${nameParts[1]}</span><br>`;
-            const dept1 = `<span>${nameParts[4]}</span><br>`;
-            const dept2 = `<span>${nameParts[5]}</span><br>`;
+            const fullName = `<span>${nameParts[1]} ${nameParts[2]}</span><br>`;
+            const id = `<span style="color:yellow">${nameParts[0]}</span><br>`;
+            const dept1 = `<span>${nameParts[3]}</span><br>`;
 
-            const lines = [suptar, id, fullName, dept1];
+            const lines = [id, fullName, dept1];
             let lineIndex = 0;
 
             picker.style.opacity = 1;
