@@ -64,7 +64,7 @@
 </head>
 <body>
     <div id="picker-container">
-        <h1>Multibird 25.11.23</h1>
+        <h1>Multibird 25.11.2023</h1>
         <img id="spinner" src="spinner.png" alt="Spinning Wheel">
         <pre id="picker"></pre>
         <button id="reveal-button">Reveal Random Name</button>
@@ -74,7 +74,7 @@
         let names = [];
         let animationInterval;
 
-        fetch('multibird17.csv')
+        fetch('multibird25.csv')
             .then(response => response.text())
             .then(data => {
                 names = data.split('\n');
