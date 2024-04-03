@@ -1,40 +1,132 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Responsive Leaderboard</title>
-  <!-- Include Bootstrap CSS -->
-  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Responsive CSS for Google Sheets Embed -->
-  <style>
-    .embed-responsive {
-      position: relative;
-      display: block;
-      width: 100%;
-      padding: 0;
-      overflow: hidden;
-    }
-    .embed-responsive iframe {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      border: 0;
-    }
-  </style>
+    <title>Super Star Bingo</title>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-image: url('background.gif');
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center top;
+        }
+
+        #picker-container {
+            width: 400px;
+            height: 600px;
+            border: 2px solid white;
+            margin: 50px auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: rgba(0, 0, 0, 0.3);
+        }
+
+        #spinner {
+            width: 50px;
+            height: 50px;
+            animation: spin 2s linear infinite;
+            margin-top: 20px;
+        }
+
+        #picker {
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 20px;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            color: white;
+            text-align: center; /* Center the text */
+            padding-left: 10px;
+            line-height: 1.5;
+        }
+
+        #reveal-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
 </head>
 <body>
+    <div id="picker-container">
+        <h1>Super Star Bingo</h1>
+        <img id="spinner" src="spinner.png" alt="Spinning Wheel">
+        <pre id="picker"></pre>
+        <button id="reveal-button">Reveal Random Name</button>
+    </div>
 
-<div class="container">
-  <div class="embed-responsive embed-responsive-16by9">
-    <!-- Paste your Google Sheets embed code here -->
-    <iframe class="embed-responsive-item" src="<iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vRHZ1LZDbmwYYTZrC3iZ1mavw_Rgb-S2d4IzeRF5OcEoMgG_6EGzA6OnbbZ3zF2h9kLTRT8OzT_o3h1/pubhtml?gid=1105950379&amp;single=true&amp;widget=true&amp;headers=false"></iframe>"></iframe>
-  </div>
-</div>
+    <script>
+        let names = [];
+        let animationInterval;
 
-<!-- Include Bootstrap JS (optional, if needed) -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        fetch('names.csv')
+            .then(response => response.text())
+            .then(data => {
+                names = data.split('\n');
+                names.shift(); // Remove header
+            })
+            .catch(error => console.error('Error loading names:', error));
+
+        const picker = document.getElementById("picker");
+        const spinner = document.getElementById("spinner");
+        const revealButton = document.getElementById("reveal-button");
+
+        revealButton.addEventListener("click", () => {
+            revealButton.disabled = true;
+            spinner.style.display = "inline";
+
+            animationInterval = setInterval(() => {
+                picker.textContent = names[Math.floor(Math.random() * names.length)];
+            }, 500);
+
+            setTimeout(() => {
+                clearInterval(animationInterval);
+                const winningName = names[Math.floor(Math.random() * names.length)];
+                formatAndDisplayWinner(winningName);
+            }, 5000);
+        });
+
+        function formatAndDisplayWinner(name) {
+            const nameParts = name.split(',');
+            const fullName = `<span>${nameParts[2]} ${nameParts[3]}</span><br>`;
+            const suptar = `<span style="color:yellow">${nameParts[0]}</span><br>`;
+            const id = `<span>Staff ID: ${nameParts[1]}</span><br>`;
+            const dept1 = `<span>${nameParts[4]}</span><br>`;
+            const dept2 = `<span>${nameParts[5]}</span><br>`;
+
+            const lines = [suptar, id, fullName, dept1];
+            let lineIndex = 0;
+
+            picker.style.opacity = 1;
+            spinner.style.display = "inline";
+
+            animationInterval = setInterval(() => {
+                picker.innerHTML = lines.slice(0, lineIndex + 1).join('');
+                lineIndex++;
+
+                if (lineIndex === lines.length) {
+                    clearInterval(animationInterval);
+                    picker.style.opacity = 1;
+                    spinner.style.display = "none";
+                    revealButton.disabled = false;
+                }
+            }, 200);
+        }
+    </script>
 </body>
 </html>
